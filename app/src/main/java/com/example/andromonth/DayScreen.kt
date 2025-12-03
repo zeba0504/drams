@@ -1,9 +1,16 @@
 package com.example.andromonth
 
+import androidx.annotation.DrawableRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +28,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.andromonth.model.Day
 
@@ -53,9 +62,30 @@ fun DayCardItem(day: Day, index: Int, modifier: Modifier = Modifier) {
                     .fillMaxWidth()
                     .padding(8.dp)
             ) {
+                DayImage(
+                    visible = !expand, dayImage = day.imageRes, modifier = Modifier
+                        .size(64.dp)
+                        .clip(MaterialTheme.shapes.small)
+                )
 
             }
         }
+    }
+}
+
+@Composable
+fun DayImage(visible: Boolean, @DrawableRes dayImage: Int, modifier: Modifier = Modifier) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = fadeIn() + expandHorizontally(),
+        exit = fadeOut() + shrinkHorizontally()
+    ) {
+        Image(
+            painter = painterResource(id = dayImage),
+            contentDescription = null,
+            modifier = modifier,
+            contentScale = ContentScale.Crop
+        )
     }
 }
 @Composable
