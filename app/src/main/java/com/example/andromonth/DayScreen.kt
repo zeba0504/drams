@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -33,11 +34,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.andromonth.model.Day
 
@@ -85,7 +88,11 @@ fun DayCardItem(day: Day, index: Int, modifier: Modifier = Modifier) {
                 DayExpandButton(expand = expand, onClick = { expand = !expand })
 
             }
+            if (expand)
+                DayDesc(day = day, modifier = Modifier.padding(16.dp))
+
         }
+
     }
 }
 
@@ -125,6 +132,24 @@ fun DayExpandButton(expand: Boolean, onClick: () -> Unit, modifier: Modifier = M
         Icon(
             imageVector = if (expand) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
             contentDescription = stringResource(id = R.string.expand_button)
+        )
+    }
+}
+@Composable
+fun DayDesc(day: Day, modifier: Modifier = Modifier) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        Image(
+            painter = painterResource(id = day.imageRes),
+            contentDescription = stringResource(id = day.titleRes),
+            modifier = Modifier
+                .wrapContentWidth(Alignment.CenterHorizontally)
+                .clip(MaterialTheme.shapes.large)
+        )
+        Text(
+            text = stringResource(id = day.descRes),
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(16.dp),
+            fontWeight = FontWeight.Bold
         )
     }
 }
