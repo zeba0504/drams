@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.andromonth.model.DayRepo
@@ -72,19 +73,23 @@ fun AndroMonthTopBar() {
     })
 }
 
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+// Вспомогательные функции для работы с аннотированным текстом
+fun AnnotatedString.Builder.appendLink(linkText: String, linkUrl: String) {
+    pushStringAnnotation(tag = linkUrl, annotation = linkUrl)
+    append(linkText)
+    pop()
 }
+fun AnnotatedString.onLinkClick(offset: Int, onClick: (String) -> Unit) {
+    getStringAnnotations(start = offset, end = offset).firstOrNull()?.let {
+        onClick(it.item)
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     AndroMonthTheme {
-        Greeting("Android")
+        AndroMonthApp()
     }
 }
