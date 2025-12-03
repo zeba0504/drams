@@ -1,6 +1,7 @@
 package com.example.andromonth
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
@@ -18,9 +19,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.andromonth.model.Day
 
@@ -67,6 +75,14 @@ fun DayCardItem(day: Day, index: Int, modifier: Modifier = Modifier) {
                         .size(64.dp)
                         .clip(MaterialTheme.shapes.small)
                 )
+                DayInfo(
+                    title = day.titleRes,
+                    day_no = String.format("Day%d :", index + 1),
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .weight(1f)
+                )
+                DayExpandButton(expand = expand, onClick = { expand = !expand })
 
             }
         }
@@ -85,6 +101,30 @@ fun DayImage(visible: Boolean, @DrawableRes dayImage: Int, modifier: Modifier = 
             contentDescription = null,
             modifier = modifier,
             contentScale = ContentScale.Crop
+        )
+    }
+}
+
+@Composable
+fun DayInfo(@StringRes title: Int, day_no: String, modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
+        Text(
+            text = day_no,
+            style = MaterialTheme.typography.titleMedium
+        )
+        Text(
+            text = stringResource(id = title),
+            style = MaterialTheme.typography.labelMedium,
+            modifier = Modifier.padding(vertical = 4.dp)
+        )
+    }
+}
+@Composable
+fun DayExpandButton(expand: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    IconButton(onClick = onClick, modifier = modifier) {
+        Icon(
+            imageVector = if (expand) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+            contentDescription = stringResource(id = R.string.expand_button)
         )
     }
 }
