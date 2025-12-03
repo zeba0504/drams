@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -41,8 +42,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.andromonth.model.Day
+import com.example.andromonth.model.DayRepo
+import com.example.andromonth.ui.theme.AndroMonthTheme
 
 @Composable
 fun DayCardItem(day: Day, index: Int, modifier: Modifier = Modifier) {
@@ -155,5 +159,16 @@ fun DayDesc(day: Day, modifier: Modifier = Modifier) {
 }
 @Composable
 fun DayScreenList(days: List<Day>, modifier: Modifier = Modifier) {
-    LazyColumn(modifier = modifier) {}
+    LazyColumn(modifier = modifier) {
+        itemsIndexed(days) { index, day ->
+            DayCardItem(day = day, index = index)
+        }
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun Preview() {
+    AndroMonthTheme {
+        DayScreenList(days = DayRepo.days)
+    }
 }
